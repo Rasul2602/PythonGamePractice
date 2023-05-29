@@ -9,14 +9,18 @@ class Game:
         self.screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.running = True
-        
-        # self.character_spritesheet = Spritesheet('img/')
+        self.grass = Spritesheet('img/tileset_grass.png')
+        self.wall = Spritesheet('img/wall.png')
+        self.tress = Spritesheet('img/trees.png')
+        # self.terrain_spritesheet = Spritesheet('img/')
+        self.character_spritesheet = Spritesheet('img/AnimationSheet_Character2.png')
         
     def createTilemap(self):
         for i, row in enumerate(tilemap):
             for j, column in enumerate(row):
+                Ground(self,j,i)
                 if column == "B":
-                    Block(self, j,i)
+                    Block(self, j,i) 
                 if column == "P":
                     Player(self,j,i)
 
