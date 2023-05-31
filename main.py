@@ -8,7 +8,7 @@ pygame.mixer.init()
 
 
 sound = pygame.mixer.Sound('music/xDeviruchi - Title Theme .wav')
-
+deathMelody = pygame.mixer.Sound('music/IT FOLLOWS THEME - Disasterpeace (online-audio-converter.com).wav')
 melody = pygame.mixer.Sound('music/Skyrim.wav')
 
 class Game:
@@ -25,13 +25,13 @@ class Game:
         self.tress = Spritesheet('img/trees.png')
         # self.terrain_spritesheet = Spritesheet('img/')
         self.character_spritesheet = Spritesheet('img/AnimationSheet_Character2.png')
-        self.go_background = pygame.image.load('img/die.jpg')
-        self.go_background = pygame.transform.scale(self.go_background, (self.go_background.get_width() * 2, self.go_background.get_height() * 2))  # Увеличение размера фонового изображения
+        self.go_background = pygame.image.load('img/1511867575144063811.png')
+        self.go_background = pygame.transform.scale(self.go_background, (self.go_background.get_width() * 1, self.go_background.get_height() * 0.6))  # Увеличение размера фонового изображения
         self.intro_background = pygame.image.load('img/bg.png')
         
-        self.wall_2 = Spritesheet('img/decorative.png')
+        self.wall_2 = Spritesheet('img/global_tileset.png')
         self.attacks = Spritesheet('img/attack.png')
-
+    
         
         
     def createTilemap(self):
@@ -61,7 +61,7 @@ class Game:
         self.blocks = pygame.sprite.LayeredUpdates()
         self.enemies = pygame.sprite.LayeredUpdates()
         self.attack = pygame.sprite.LayeredUpdates()
-        
+        self.exit = pygame.sprite.LayeredUpdates()
         
         self.createTilemap()
         
@@ -73,16 +73,12 @@ class Game:
                 self.playing = False
                 self.running = False
                 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    if self.player.facing == 'up':
-                        Attack(self, self.player.rect.x, self.player.rect.y - TILESIZE)    
-                    if self.player.facing == 'down':
-                        Attack(self, self.player.rect.x, self.player.rect.y + TILESIZE)    
-                    if self.player.facing == 'left':
-                        Attack(self, self.player.rect.x - TILESIZE, self.player.rect.y)    
-                    if self.player.facing == 'right':
-                        Attack(self, self.player.rect.x + TILESIZE , self.player.rect.y )            
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_SPACE:
+            #         if self.player.facing == 'left':
+            #             Attack(self, self.player.rect.x - TILESIZE, self.player.rect.y)    
+            #         if self.player.facing == 'right':
+            #             Attack(self, self.player.rect.x + TILESIZE , self.player.rect.y )            
         
     def update(self):
         self.all_sprites.update()
@@ -102,13 +98,17 @@ class Game:
             self.update()
             self.draw()
             sound.stop()
+            deathMelody.stop()
             melody.play(-1)
+            
         
     def game_over(self):
-        text = self.font.render('Game Over', True, WHITE)
-        text_rect = text.get_rect(center=(WIN_HEIGHT/2, WIN_WIDTH/2))
-        
-        restart_button = Button(10,WIN_HEIGHT - 60, 120,50,WHITE, BLACK, 'Restart', 32)
+        text = self.font.render('YOU ARE DIE', True, RED)
+        text_rect = text.get_rect(center=(400, 150))
+        melody.stop()
+        sound.stop()
+        deathMelody.play(-1)
+        restart_button = Button(10,WIN_HEIGHT - 60, 120,50,RED, BLACK, 'Restart', 32)
         
         for sprite in self.all_sprites:
             sprite.kill()
