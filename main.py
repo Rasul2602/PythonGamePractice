@@ -29,6 +29,8 @@ class Game:
         self.go_background = pygame.transform.scale(self.go_background, (self.go_background.get_width() * 1, self.go_background.get_height() * 0.6))  # Увеличение размера фонового изображения
         self.intro_background = pygame.image.load('img/bg.png')
         
+        self.finish = pygame.image.load('img/finish.png')
+        
         self.wall_2 = Spritesheet('img/global_tileset.png')
         self.attacks = Spritesheet('img/attack.png')
     
@@ -45,7 +47,7 @@ class Game:
                 if column == "S":
                     Ground2(self, j,i)    
                 if column == "L":
-                    Block2(self, j,i)     
+                    Priest(self, j,i)     
                 if column == "E":
                     Enemy(self,j,i)
                 if column == "P":
@@ -73,13 +75,9 @@ class Game:
                 self.playing = False
                 self.running = False
                 
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_SPACE:
-            #         if self.player.facing == 'left':
-            #             Attack(self, self.player.rect.x - TILESIZE, self.player.rect.y)    
-            #         if self.player.facing == 'right':
-            #             Attack(self, self.player.rect.x + TILESIZE , self.player.rect.y )            
-        
+                
+
+
     def update(self):
         self.all_sprites.update()
         
@@ -103,7 +101,7 @@ class Game:
             
         
     def game_over(self):
-        text = self.font.render('YOU ARE DIE', True, RED)
+        text = self.font.render('YOU DIED', True, RED)
         text_rect = text.get_rect(center=(400, 150))
         melody.stop()
         sound.stop()
@@ -152,7 +150,11 @@ class Game:
             self.screen.blit(title, title_rect)
             self.screen.blit(play_button.image, play_button.rect)
             self.clock.tick(FPS)
+            
             pygame.display.update()    
+            
+    
+
     # def intro_screen(self):
     #     intro = True
     #     sound.play(-1)
@@ -185,6 +187,7 @@ g.new()
 while g.running:
     g.main()
     g.game_over()
+    
     
 pygame.quit()
 sys.exit()

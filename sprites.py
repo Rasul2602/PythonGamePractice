@@ -80,6 +80,7 @@ class Player(pygame.sprite.Sprite):
         self.movement()
         self.animate()
         self.collide_enemy()
+        self.exit()
         
         self.rect.x += self.x_change
         self.collide_block('x')
@@ -117,13 +118,14 @@ class Player(pygame.sprite.Sprite):
     def collide_enemy(self):
         hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
         if hits:
-            self.kill()
-            self.game.playing = False
-        
-    def collide_exit(self):
+            pygame.quit()
+            
+            
+    def exit(self):
         hits = pygame.sprite.spritecollide(self, self.game.exit, False)
         if hits:
-            self.game.playing = False
+            pygame.quit()
+
     
     def collide_block(self,direction):
         if direction == "x":
@@ -285,25 +287,34 @@ class Block(pygame.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
-class Block2(pygame.sprite.Sprite):
+class Priest(pygame.sprite.Sprite):
     def __init__(self,game,x,y):
         
         self.game = game
-        self._layer = BLOCK_LAYER
-        self.groups = self.game.all_sprites , self.game.blocks
+        self._layer = ENEMY_LAYER
+        self.groups = self.game.all_sprites , self.game.exit
         pygame.sprite.Sprite.__init__(self, self.groups)
         
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.width = TILESIZE
         self.height = TILESIZE
-        self.image = self.game.tress.get_sprite(96, 190, self.width, self.height)
+        self.image = self.game.pumpkin.get_sprite(177, 174, self.width, self.height)
 
 
         
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
+
+        
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.height = TILESIZE
+        self.width = TILESIZE
+        
+
+        
 
 class Ground(pygame.sprite.Sprite):
     def __init__(self,game,x,y):
@@ -317,7 +328,7 @@ class Ground(pygame.sprite.Sprite):
         self.width = TILESIZE
         self.height = TILESIZE  
         
-        self.image = self.game.grass.get_sprite(64,64,self.width,self.height)
+        self.image = self.game.pumpkin.get_sprite(15,80,self.width,self.height)
         
         self.rect = self.image.get_rect()
         self.rect.x = self.x
@@ -334,7 +345,7 @@ class Wall_left(pygame.sprite.Sprite):
             
         self.game = game
         self._layer = BLOCK_LAYER
-        self.groups = self.game.all_sprites , self.game.exit
+        self.groups = self.game.all_sprites , self.game.blocks
         pygame.sprite.Sprite.__init__(self, self.groups)
         
         self.x = x * TILESIZE
@@ -366,36 +377,6 @@ class Ground2(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y        
-# class Button:
-#     def __init__(self,x,y,width,height,fg,bg,content,fontsize):
-#         self.font = pygame.font.Font('arial.ttf', fontsize)
-#         self.content = content
-        
-#         self.x = x
-#         self.y = y
-#         self.width = width
-#         self.height = height
-        
-#         self.fg = fg
-#         self.bg = bg
-        
-#         self.image = pygame.Surface((self.width, self.height))
-#         self.image.fill(self.bg)
-#         self.rect = self.image.get_rect()
-        
-#         self.rect.x = self.x
-#         self.rect.y = self.y
-        
-#         self.text = self.font.render(self.content, True, self.fg)
-#         self.text_rect = self.text.get_rect(center=(self.width/2, self.height/2))
-#         self.image.blit(self.text, self.text_rect)
-        
-#     def is_pressed(self,pos,pressed):
-#         if self.rect.collidepoint(pos):
-#             if pressed[0]:
-#                 return True
-#             return False
-#         return False
     
 class Button:
     def __init__(self,x,y,width,height,fg,bg,content,fontsize):
